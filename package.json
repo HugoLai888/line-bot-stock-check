@@ -1,0 +1,14 @@
+{
+  "name": "line-bot-stock-check",
+  "version": "1.0.0",
+  "main": "api/webhook.js",
+  "scripts": {
+    "start": "node api/webhook.js"
+  },
+  "dependencies": {
+    "@line/bot-sdk": "^7.5.1",
+    "express": "^4.18.2",
+    "googleapis": "^133.0.0",
+    "google-auth-library": "^9.0.0"
+  }
+}
