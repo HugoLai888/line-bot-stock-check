@@ -12,24 +12,25 @@ const config = {
 
 const client = new Client(config);
 
-// webhook endpoint
 app.post('/', middleware(config), async (req, res) => {
   if (!req.body.events || req.body.events.length === 0) {
     return res.status(200).send('OK');
   }
 
   const events = req.body.events;
-  ...
 
-
-  const results = await Promise.all(events.map(async (event) => {
+  await Promise.all(events.map(async (event) => {
     if (event.type === 'message' && event.message.type === 'text') {
       const text = event.message.text;
 
       if (text.startsWith('查詢') && text.endsWith('庫存')) {
         const keyword = text.replace(/^查詢|\s*庫存$/g, '').trim();
-        const reply = await getStockByKeyword(keyword);
-        return client.replyMessage(event.replyToken, { type: 'text', text: reply });
+        const replyText = await getStockByKeyword(keyword);
+
+        await client.replyMessage(event.replyToken, {
+          type: 'text',
+          text: replyText || '查無庫存資料',
+        });
       }
     }
   }));
