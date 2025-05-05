@@ -14,6 +14,11 @@ const client = new Client(config);
 
 // webhook endpoint
 app.post('/', middleware(config), async (req, res) => {
+  // LINE 的驗證事件會在這邊出現，必須快速回應
+  if (!req.body.events || req.body.events.length === 0) {
+    return res.status(200).send('OK');
+  }
+
   const events = req.body.events;
 
   const results = await Promise.all(events.map(async (event) => {
